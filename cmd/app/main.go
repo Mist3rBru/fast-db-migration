@@ -103,6 +103,8 @@ func main() {
 	// Using semaphore to limit goroutines to 99
 	sem := make(chan struct{}, 99)
 	wg := sync.WaitGroup{}
+
+	logger.Info("migrating users...")
 	for page := range pages {
 		wg.Add(1)
 		sem <- struct{}{}

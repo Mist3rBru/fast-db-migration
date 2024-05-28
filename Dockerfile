@@ -6,5 +6,5 @@ COPY /cmd ./cmd
 COPY /config ./config
 COPY /internal ./internal
 
-FROM build as build
+FROM base as build
 RUN GOOS=linux go build -a -o main cmd/app/main.go
