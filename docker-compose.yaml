@@ -9,6 +9,7 @@ services:
       - ./data:/data/db
     ports:
       - '27017:27017'
+    command: mongod --quiet --logpath /dev/null
 
   postgres:
     container_name: postgres-container

@@ -8,30 +8,22 @@ import (
 )
 
 var (
-	pg *gorm.DB
-	mg *mongo.Database
+	Postgres *gorm.DB
+	Mongo    *mongo.Database
 )
 
 func Init() error {
 	var err error
 
-	pg, err = initPostgres()
+	Postgres, err = initPostgres()
 	if err != nil {
 		return fmt.Errorf("error initializing postgres: %v", err)
 	}
 
-	mg, err = initMongo()
+	Mongo, err = initMongo()
 	if err != nil {
 		return fmt.Errorf("error initializing mongo: %v", err)
 	}
 
 	return nil
-}
-
-func GetPostgres() *gorm.DB {
-	return pg
-}
-
-func GetMongo() *mongo.Database {
-	return mg
 }
