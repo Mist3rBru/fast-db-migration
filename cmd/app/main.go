@@ -100,19 +100,23 @@ func main() {
 	}
 	pages := int((mongoUsers / pageLength) + 1)
 
+	// Using semaphore to limit goroutines to 99
+	sem := make(chan struct{}, 99)
 	wg := sync.WaitGroup{}
 	for page := range pages {
 		wg.Add(1)
+		sem <- struct{}{}
 		go func(page int) {
 			defer wg.Done()
-			
+			defer func() { <-sem }()
+
 			users, err := getPagedUsers(page)
 			if err != nil {
 				logger.Error("page load error: ", err)
 				return
 			}
 			config.Postgres.Create(&users)
-			logger.Infof("migraded %d of %d pages", page, pages)
+			logger.Infof("migraded page %d of %d pages", page, pages)
 		}(page)
 	}
 
